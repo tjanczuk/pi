@@ -60,15 +60,73 @@ module.exports = ws => {
             message('Light off!');
         }
 
-        let movementKey = `${m.lf ? '1' : '0'}${m.lb ? '1' : '0'}${m.rf ? '1' : '0'}${m.rb ? '1' : '0'}`;
-        let movement = movements[movementKey];
-        if (!movement) {
-            return message('I did not get the instruction');
+        let state = `${m.lf ? '1' : '0'}${m.lb ? '1' : '0'}${m.rf ? '1' : '0'}${m.rb ? '1' : '0'}`;
+
+        if (state === '0000') {
+            robot.left.stop();
+            robot.right.stop();
+            message('Stopped.');
         }
-        debug('MOVEMENT', movement);
-        robot.left[movement[0]]();
-        robot.right[movement[1]]();
-        message(movement[2]);
+        else if (state === '0001') {
+            robot.left.stop();
+            robot.right.backward();
+            message('Turning right using right wheel.');
+        }
+        else if (state === '0010') {
+            robot.left.stop();
+            robot.right.forward();
+            message('turning left!');
+        }
+        else if (state === '0011') {
+            robot.left.stop();
+            robot.right.stop();
+            message('I AM CONFUSED!!!!');
+        }
+        else if (state === '0100') {
+            robot.left.backward() ;
+            robot.right.stop() ;
+            message('turning left') ;
+        }
+        else if (state === '0101') {
+            robot.left.backward();
+            robot.right.backward();
+            message('GOING BACK!');
+        }
+        else if (state === '0110') {
+            robot.left.backward();
+            robot.right.forward();
+            message('fast left') ;
+        }
+        else if (state === '1000') {
+            robot.left.forward();
+            robot.right.stop();
+            message('turning right');
+        }
+        else if (state === '1001') {
+            robot.left.forward();
+            robot.right.backward();
+            message('fast right');
+        }
+        else if (state === '1010') {
+            robot.left.forward();
+            robot.right.forward();
+            message('forward');
+        }
+        else {
+            robot.left.stop();
+            robot.right.stop();
+            message('I AM CONFUSED... AGAIN');
+        }
+
+        // let movementKey = `${m.lf ? '1' : '0'}${m.lb ? '1' : '0'}${m.rf ? '1' : '0'}${m.rb ? '1' : '0'}`;
+        // let movement = movements[movementKey];
+        // if (!movement) {
+        //     return message('I did not get the instruction');
+        // }
+        // debug('MOVEMENT', movement);
+        // robot.left[movement[0]]();
+        // robot.right[movement[1]]();
+        // message(movement[2]);
     });
 
     ws.on('error', e => {
