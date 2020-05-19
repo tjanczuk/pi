@@ -1,0 +1,13 @@
+[Unit]
+Description=Pi Robot
+After=network.target
+Requires=network.target
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+Environment=DEBUG=server:*
+ExecStart=/usr/local/bin/node /home/pi/projects/pi/server/bin/www
+
+[Install]
+WantedBy=multi-user.target
