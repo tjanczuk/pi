@@ -31,7 +31,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "setup": "ln -s -f $(pwd)/server/robot.service /etc/systemd/system/robot.service",
+    "setup": "ln -s -f $(pwd)/server/robot.service /etc/systemd/system/robot.service && systemctl enable robot",
     "restart": "sudo systemctl restart robot.service",
     "logs": "sudo journalctl -u robot.service -f"
   },
