@@ -7,7 +7,7 @@ Requires=network.target
 TimeoutStartSec=0
 Restart=always
 Environment=DEBUG=server:*
-ExecStart=/usr/local/bin/node /home/pi/projects/pi/server/bin/www
+ExecStart=/home/pi/.nvm/versions/node/v10.20.1/bin/node /home/pi/projects/pi/server/bin/www
 
 [Install]
 WantedBy=multi-user.target

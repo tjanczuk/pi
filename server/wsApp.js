@@ -65,56 +65,67 @@ module.exports = ws => {
         if (state === '0000') {
             robot.left.stop();
             robot.right.stop();
+            robot.lights.set(0, 0);
             message('Stopped.');
         }
         else if (state === '0001') {
             robot.left.stop();
             robot.right.backward();
+            robot.lights.set(1, 'left');
             message('Turning right using right wheel.');
         }
         else if (state === '0010') {
             robot.left.stop();
             robot.right.forward();
+            robot.lights.set(0,'left');
             message('turning left!');
         }
         else if (state === '0011') {
             robot.left.stop();
             robot.right.stop();
+            robot.lights.set(0,0);
             message('I AM CONFUSED!!!!');
         }
         else if (state === '0100') {
             robot.left.backward() ;
             robot.right.stop() ;
             message('turning left') ;
+            robot.lights.set(1,'right');
         }
         else if (state === '0101') {
             robot.left.backward();
             robot.right.backward();
+            robot.lights.set(1,0);
             message('GOING BACK!');
         }
         else if (state === '0110') {
             robot.left.backward();
             robot.right.forward();
+            robot.lights.set(0,'left');
             message('fast left') ;
         }
         else if (state === '1000') {
             robot.left.forward();
             robot.right.stop();
+            robot.lights.set(0,'right');
             message('turning right');
         }
         else if (state === '1001') {
             robot.left.forward();
             robot.right.backward();
+            robot.lights.set(0,'right');
             message('fast right');
         }
         else if (state === '1010') {
             robot.left.forward();
             robot.right.forward();
+            robot.lights.set(0,0);
             message('forward');
         }
         else {
             robot.left.stop();
             robot.right.stop();
+            robot.lights.set(0,0);
             message('I AM CONFUSED... AGAIN');
         }
 

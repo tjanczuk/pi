@@ -1,5 +1,11 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Node.js version
+
+**NOTE** This project requires Node.js 10.x. Not 12 (some native dependencies do not compile).
+
+This is best installed with `nvm install 10.20.1`, because the systemd service expects the binary in `/home/pi/.nvm/versions/node/v10.20.1/bin/node`.
+
 ## Available Scripts
 
 In the project directory, you can run:

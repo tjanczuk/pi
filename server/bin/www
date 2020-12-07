@@ -10,6 +10,8 @@ var debug = require('debug')('server:server');
 var http = require('http');
 var Ws = require('ws');
 
+debug('Starting with Node.js', process.version);
+
 /**
  * Get port from environment and store in Express.
  */
