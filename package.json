@@ -34,7 +34,8 @@
     "eject": "react-scripts eject",
     "setup": "ln -s -f $(pwd)/server/robot.service /etc/systemd/system/robot.service && systemctl enable robot",
     "restart": "sudo systemctl restart robot.service",
-    "logs": "sudo journalctl -u robot.service -f"
+    "logs": "sudo journalctl -u robot.service -f",
+    "fuse": "fuse function deploy -b tomek pi -d ./fusebit"
   },
   "eslintConfig": {
     "extends": "react-app"

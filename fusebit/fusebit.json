@@ -1,0 +1,59 @@
+{
+  "fuseVersion": "1.8.12",
+  "metadata": {
+    "fusebit": {
+      "runner": "// Return a function that evaluates to a Superagent request promise\n\nctx => Superagent.get(`${ctx.url}/switch`);\n\n// Simple POST request\n// ctx => Superagent.post(ctx.url)\n//     .send({ hello: 'world' });\n\n// POST request with Authorization header using function's application settings\n// ctx => Superagent.post(ctx.url)\n//     .set('Authorization', `Bearer ${ctx.configuration.MY_API_KEY}`)\n//     .send({ hello: 'world' });\n",
+      "editor": {
+        "ensureFunctionExists": false,
+        "theme": "light",
+        "actionPanel": {
+          "theme": "light",
+          "enableCodeOnlyToggle": true,
+          "enableFullScreen": true,
+          "enableRun": true,
+          "enableSave": true,
+          "enableClose": false
+        },
+        "editorPanel": {
+          "theme": "light"
+        },
+        "logsPanel": {
+          "theme": "light",
+          "maxSize": 10240
+        },
+        "navigationPanel": {
+          "theme": "light",
+          "hideCode": false,
+          "hideFiles": [],
+          "hideComputeSettings": true,
+          "hideConfigurationSettings": false,
+          "hideScheduleSettings": false,
+          "hideRunnerTool": false
+        },
+        "statusPanel": {
+          "theme": "light"
+        },
+        "version": "1.4.6"
+      }
+    }
+  },
+  "compute": {
+    "memorySize": 128,
+    "timeout": 30,
+    "staticIp": false
+  },
+  "computeSerialized": "# Compute settings control resources available to the executing function\n\n# memorySize=128\n# timeout=30\n# staticIp=false\nmemorySize=128\ntimeout=30\nstaticIp=false",
+  "scheduleSerialized": "# Set the 'cron' value to execute this function on a schedule\n\n# Check available timezone identifiers at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones\n# Default is UTC.\n# timezone=US/Pacific\n\n# Design a CRON schedule at https://crontab.guru/\n\n# Every day at midnight\n# cron=0 0 * * *\n\n# Every day at 5am\n# cron=0 5 * * *\n\n# Every hour\n# cron=0 */1 * * *\n\n# Every 15 minutes\n# cron=*/15 * * * *\n\n# At 10pm every Friday\n# cron=0 22 * * Fri\n",
+  "security": {
+    "authentication": "none",
+    "functionPermissions": {
+      "allow": [
+        {
+          "action": "storage:*",
+          "resource": "/account/{{accountId}}/subscription/{{subscriptionId}}/storage/boundary/{{boundaryId}}/function/{{functionId}}/"
+        }
+      ]
+    }
+  },
+  "location": "https://stage.us-west-2.fusebit.io/v1/run/sub-ed9d9341ea356841/tomek/pi"
+}
