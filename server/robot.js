@@ -187,5 +187,32 @@ class Robot {
     }
 }
 
+class Switch {
+    constructor() {
+        this.switch = new Gpio(18, 'out', { activeLow: true }); // bcm
+        this.off();
+        process.on('exit', () => this.destruct());
+    }
+
+    destruct() {
+        this.off();
+        this.switch.unexport();
+        this.switch = undefined;
+    }
+
+    on() {
+        this.switch.writeSync(1);
+    }
+
+    off() {
+        this.switch.writeSync(0);
+    }
+
+    get() {
+        return this.switch.readSync();
+    }
+}
+
 module.exports = Robot;
 module.exports.Lights = Lights;
+module.exports.Switch = Switch;

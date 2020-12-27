@@ -9,6 +9,10 @@ var wsApp = require('../wsApp');
 var debug = require('debug')('server:server');
 var http = require('http');
 var Ws = require('ws');
+const Relay = require('../relay');
+const spawn = require('child_process').spawn;
+const Path = require('path');
+const Superagent = require('superagent');
 
 debug('Starting with Node.js', process.version);
 
@@ -18,6 +22,67 @@ debug('Starting with Node.js', process.version);
 
 var port = normalizePort(process.env.PORT || '80');
 app.set('port', port);
+
+
+/**
+ * Establish a tunnel and register it with a Fusebit function so that it can communicate back to Pi
+ */
+
+async function restartTunnel() {
+  let ngrok = spawn(Path.join(__dirname, '..', 'ngrok'), ['http', port], { detached: false });
+  process.once('exit', () => {
+    ngrok && ngrok.kill();
+    ngrok = undefined;
+  });
+  ngrok.on('close', (code) => {
+    if (!ngrok) return;
+    ngrok = undefined;
+    debug(`Ngrok terminated with status code ${code}`);
+    if (code === 0) {
+      restartTunnel();
+    }
+    else {
+      throw new Error(`Ngrok terminated with error code ${code}`);
+      process.exit(1);
+    }
+  });
+  debug(`Ngrok started`);
+  setTimeout(async () => {
+    let tunnelUrl;
+    try {
+      const response = await Superagent.get('http://127.0.0.1:4040/api/tunnels');
+      for (var i = 0; i < response.body.tunnels.length; i++) {
+        if (response.body.tunnels[i].proto === 'http') {
+          tunnelUrl = response.body.tunnels[i].public_url;
+          break;
+        }
+      }
+      if (!tunnelUrl) {
+        throw new Error(`No Ngrok tunnel URLs available.`);
+      }
+      debug(`Ngrok tunnel established: ${tunnelUrl}`)
+    }
+    catch (e) {
+      debug(`Unable to obtain Ngrok tunnel URL: ${e.message}`);
+      process.exit(1);
+    }
+    try {
+      await Relay.registerTunnel(tunnelUrl);
+      debug(`Ngrok tunnel registered with the Fusebit function`);
+    }
+    catch (e) {
+      debug(`Unable to register Ngrok tunnel URL with the Fusebit function: ${e.message}`);
+      process.exit(1);
+    }
+  }, 1000);
+  setTimeout(() => {
+    if (ngrok) {
+      debug('Terminating Ngrok to recreate the tunnel');
+      ngrok.kill();
+    }
+  }, 15 * 60000).unref();
+}
+restartTunnel();
 
 /**
  * Create HTTP server.
